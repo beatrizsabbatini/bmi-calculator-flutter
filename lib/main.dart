@@ -18,12 +18,14 @@ class _HomeState extends State<Home> {
   TextEditingController heightController = new TextEditingController();
 
   String _message = "Digite seu peso e altura!";
+  String _resultMessage = "";
 
   void _resetFields() {
     weightController.text = "";
     heightController.text = "";
     setState(() {
       _message = "Digite seu peso e altura!";
+      _resultMessage = "";
       _formKey = GlobalKey<FormState>();
     });
   }
@@ -38,17 +40,17 @@ class _HomeState extends State<Home> {
       print(imc);
 
       if (imc < 18.6) {
-        _message = ('Abaixo do peso! ${imc.toStringAsPrecision(4)}');
+        _resultMessage = ('Abaixo do peso! Seu IMC é: ${imc.toStringAsPrecision(4)}');
       } else if (imc >= 18.6 && imc <= 24.9) {
-        _message = ('Peso ideal! ${imc.toStringAsPrecision(4)}');
+        _resultMessage = ('Peso ideal! Seu IMC é: ${imc.toStringAsPrecision(4)}');
       } else if (imc >= 24.9 && imc <= 29.9) {
-        _message = ('Levemente acima do peso... ${imc.toStringAsPrecision(4)}');
+        _resultMessage = ('Levemente acima do peso... Seu IMC é: ${imc.toStringAsPrecision(4)}');
       } else if (imc >= 29.9 && imc <= 34.9) {
-        _message = ('Obesidade Grau I! ${imc.toStringAsPrecision(4)}');
+        _resultMessage = ('Obesidade Grau I! Seu IMC é: ${imc.toStringAsPrecision(4)}');
       } else if (imc >= 34.9 && imc <= 39.9) {
-        _message = ('Obesidade Grau II! ${imc.toStringAsPrecision(4)}');
+        _resultMessage = ('Obesidade Grau II! Seu IMC é: ${imc.toStringAsPrecision(4)}');
       } else if (imc >= 40) {
-        _message = ('Obesidade Grau III! ${imc.toStringAsPrecision(4)}');
+        _resultMessage = ('Obesidade Grau III!Seu IMC é:  ${imc.toStringAsPrecision(4)}');
       }
     });
   }
@@ -57,9 +59,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("App calculadora de IMC"),
+          title: Text("Calculadora de IMC"),
           centerTitle: true,
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.deepPurpleAccent[400],
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.refresh),
@@ -69,23 +71,28 @@ class _HomeState extends State<Home> {
         ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+            padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0.0),
             child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Icon(Icons.person_outline, size: 120, color: Colors.green),
+                    Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Image(
+                          image: AssetImage('images/workout.jpg'),
+                          height: 220,
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Text(_message, textAlign: TextAlign.center, style: TextStyle(color: Colors.deepPurpleAccent[200], fontSize: 25.0, fontWeight: FontWeight.w300)),
+                    ),
                     TextFormField(
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                          labelText: "Peso (kg):",
-                          labelStyle:
-                              TextStyle(color: Colors.green, fontSize: 20.0)),
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 13.0,
-                      ),
+                      decoration: InputDecoration(enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 2)), labelText: "Peso (kg):", labelStyle: TextStyle(color: Colors.grey, fontSize: 20.0)),
+                      style: TextStyle(color: Colors.grey, fontSize: 20.0),
                       textAlign: TextAlign.center,
                       controller: weightController,
                       validator: (value) {
@@ -94,16 +101,13 @@ class _HomeState extends State<Home> {
                         }
                       },
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                          labelText: "Altura (cm):",
-                          labelStyle:
-                              TextStyle(color: Colors.green, fontSize: 20.0)),
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 13.0,
-                      ),
+                      decoration: InputDecoration(enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 2)), labelText: "Altura (cm):", labelStyle: TextStyle(color: Colors.grey, fontSize: 20.0)),
+                      style: TextStyle(color: Colors.grey, fontSize: 20.0),
                       textAlign: TextAlign.center,
                       controller: heightController,
                       validator: (value) {
@@ -112,28 +116,34 @@ class _HomeState extends State<Home> {
                         }
                       },
                     ),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: Container(
                         height: 50.0,
-                        child: RaisedButton(
+                        child: TextButton(
                           onPressed: () {
                             if (_formKey.currentState.validate()) _calculate();
-                            // _resetFields();
                           },
                           child: Text(
                             "Calcular",
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 25.00),
+                            style: TextStyle(color: Colors.white, fontSize: 25.00),
                           ),
-                          color: Colors.green,
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.deepPurpleAccent[400]),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ))),
                         ),
                       ),
                     ),
-                    Text(_message,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.green, fontSize: 25.0))
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      child: Text(_resultMessage, textAlign: TextAlign.center, style: TextStyle(color: Colors.deepPurpleAccent[200], fontSize: 25.0, fontWeight: FontWeight.w600)),
+                    )
                   ],
                 ))));
   }
