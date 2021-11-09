@@ -1,16 +1,20 @@
-# imc_app
+# BMI Calculator App
 
-A new Flutter project.
+PT - Um app que calcula o IMC.
+EN - An app that calculates the BMI.
 
-## Getting Started
+## Running the app
 
-This project is a starting point for a Flutter application.
+PT - Primeiro, instale as dependências usando:
+EN - First, install de dependencies with:
 
-A few resources to get you started if this is your first Flutter project:
+```
+flutter pub get
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+PT - Depois, para rodar o projeto, deixe um emulador já aberto e rode:
+EN - Then, to run the project, first open an emulator and then run:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+flutter run lib/main.dart
+```
